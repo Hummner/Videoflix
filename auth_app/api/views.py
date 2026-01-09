@@ -9,7 +9,11 @@ from django.urls import reverse
 from django.conf import settings
 from django.contrib.auth.models import User
 from rest_framework import status
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+
 
 class RegisterView(APIView):
 
@@ -104,5 +108,63 @@ class LoginView(TokenObtainPairView):
             secure=True,
             samesite='Lax'
         )
+
+        return response
+    
+class CustomTokenRefreshView(TokenRefreshView):
+
+
+    def post(self, request, *args, **kwargs):
+
+        refresh_token = request.COOKIES.get('refresh_token')
+        if refresh_token is None:
+            return Response(
+                {'message': 'Refresh Token is not found'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        serializer = self.get_serializer(data={'refresh': refresh_token})
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except (TokenError, InvalidToken):
+            return Response(
+                {'detail': 'Refresh token is invalid or expired'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        response = Response({
+            "detail": "Token refreshed",
+            "access": serializer.validated_data["access"]
+            }, status=status.HTTP_200_OK)
+        
+        response.set_cookie(
+            key="access_token",
+            value=serializer.validated_data['access'],
+            secure=True,
+            samesite="Lax"
+        )
+
+
+
+        return response
+    
+class Logout(APIView):
+
+
+    def post(self, request):
+
+        refresh_token = request.COOKIES.get("refresh_token")
+
+        if refresh_token is None:
+            return Response(
+                {'message': 'Refresh Token is not found'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        response = Response({"detail": "Logout successful! All tokens will be deleted. Refresh token is now invalid."}, status=status.HTTP_200_OK)
+
+        response.delete_cookie(key="access_token")
+        response.delete_cookie(key="refresh_token")
 
         return response
