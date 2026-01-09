@@ -3,7 +3,7 @@ from .serializers import RegisterSerializer, CustomTokenObtainPairSerializer, Re
 from rest_framework.response import Response
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
 from django.conf import settings
@@ -13,6 +13,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from django.template.loader import render_to_string
 
 
 class RegisterView(APIView):
@@ -193,13 +194,18 @@ class ResetPassword(APIView):
         subject = "Reset your password"
 
         message = f"Here can you reset your password -> {reset_password_url}"
-
-        send_mail(
-            subject,
-            message,
-            settings.DEFAULT_FROM_EMAIL,
-            [user.email]
+        
+        html_content = render_to_string(
+            "reset_password/reset_password.html",
+            {
+                "user": user,
+                "reset_link": reset_password_url
+            }
         )
+
+        msg = EmailMessage(subject, html_content, settings.DEFAULT_FROM_EMAIL, [user.email])
+        msg.content_subtype = "html"  # Main content is now text/html
+        msg.send()
 
 class ConfirmNewPassword(APIView):
 
