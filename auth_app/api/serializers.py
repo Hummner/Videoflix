@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 import random
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 
@@ -43,3 +45,29 @@ class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'email', 'username', 'password', 'confirmed_password']
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    email = serializers.EmailField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "username" in self.fields:
+            self.fields.pop('username')
+     
+    
+    def validate(self, attrs):
+        email = attrs['email']
+        password = attrs['password']
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise serializers.ValidationError({'error': 'Email or password is wrong'})
+        
+        data = super().validate({
+            "username":user.username,
+            "password":password
+            }
+        )
+    
+        return data

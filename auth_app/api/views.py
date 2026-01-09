@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from .serializers import RegisterSerializer
+from .serializers import RegisterSerializer, CustomTokenObtainPairSerializer
 from rest_framework.response import Response
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.conf import settings
 from django.contrib.auth.models import User
 from rest_framework import status
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 class RegisterView(APIView):
 
@@ -73,6 +74,35 @@ class ActivateAccountView(APIView):
         
         user.is_active = True
         user.save(update_fields=['is_active'])
+        print(user.is_active)
         
         return Response({"message": "Account successfully activated."}, status=status.HTTP_200_OK)
         
+
+class LoginView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = CustomTokenObtainPairSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        access_token = serializer.validated_data['access']
+        refresh_token = serializer.validated_data['refresh']
+
+        response = Response({'detail': 'Login successfull'}, status=status.HTTP_200_OK)
+
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            secure=True,
+            samesite='Lax'
+        )
+
+        response.set_cookie(
+            key="refresh_token",
+            value=refresh_token,
+            secure=True,
+            samesite='Lax'
+        )
+
+        return response
