@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from .serializers import RegisterSerializer, CustomTokenObtainPairSerializer, ResetPasswordSerializer
+from .serializers import RegisterSerializer, CustomTokenObtainPairSerializer, ResetPasswordSerializer, ConfirmNewPasswordSerializer
 from rest_framework.response import Response
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -178,7 +178,7 @@ class ResetPassword(APIView):
 
      
         if serializer.is_valid():
-            self.send_reset_password_email(request, serializer.data['user'])
+            self.send_reset_password_email(request, serializer.validated_data['user'])
 
         return Response({"detail": "An email has been sent to reset your password."}, status=status.HTTP_200_OK)
     
@@ -197,12 +197,31 @@ class ResetPassword(APIView):
         send_mail(
             subject,
             message,
-            settings.DEFAULT_FROM_EMAIL
+            settings.DEFAULT_FROM_EMAIL,
             [user.email]
         )
 
 class ConfirmNewPassword(APIView):
 
 
-    def post(self, request):
-        pass
+    def post(self, request, uidb64, token):
+        serializer = ConfirmNewPasswordSerializer(data=request.data)
+
+        try:
+            uidb64 = force_str(urlsafe_base64_decode(uidb64))
+            uidb64 = int(uidb64)
+            user = User.objects.get(pk=uidb64)
+        except Exception:
+            return Response({"detail": "The link is not valid."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not default_token_generator.check_token(user, token):
+            return Response({"detail": "The reset password link is expired or invalid."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        serializer.is_valid(raise_exception=True)
+        user.set_password(serializer.validated_data['new_password'])
+        user.save()
+
+        return Response({"detail": "Your Password has been successfully reset."}, status=status.HTTP_200_OK)
+    
+        
+        

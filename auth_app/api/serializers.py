@@ -73,7 +73,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return data
     
 class ResetPasswordSerializer(serializers.Serializer):
-    email = serializers.EmailField
+    email = serializers.EmailField()
 
     def validate(self, attrs):
 
@@ -86,4 +86,18 @@ class ResetPasswordSerializer(serializers.Serializer):
         
         attrs['user']=user
 
+        return attrs
+    
+class ConfirmNewPasswordSerializer(serializers.Serializer):
+
+    new_password = serializers.CharField()
+    confirm_password = serializers.CharField()
+
+    def validate(self, attrs):
+        new_password = attrs['new_password']
+        confirm_password = attrs['confirm_password']
+
+        if new_password != confirm_password:
+            raise serializers.ValidationError('Password and confirm password does not match.')
+        
         return attrs
