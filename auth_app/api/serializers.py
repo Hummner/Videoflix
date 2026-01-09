@@ -71,3 +71,19 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         )
     
         return data
+    
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField
+
+    def validate(self, attrs):
+
+        email = attrs['email']
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return attrs
+        
+        attrs['user']=user
+
+        return attrs

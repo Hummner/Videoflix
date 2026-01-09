@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from .serializers import RegisterSerializer, CustomTokenObtainPairSerializer
+from .serializers import RegisterSerializer, CustomTokenObtainPairSerializer, ResetPasswordSerializer
 from rest_framework.response import Response
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -168,3 +168,41 @@ class Logout(APIView):
         response.delete_cookie(key="refresh_token")
 
         return response
+    
+
+class ResetPassword(APIView):
+
+    def post(self, request):
+
+        serializer = ResetPasswordSerializer(data=request.data)
+
+     
+        if serializer.is_valid():
+            self.send_reset_password_email(request, serializer.data['user'])
+
+        return Response({"detail": "An email has been sent to reset your password."}, status=status.HTTP_200_OK)
+    
+    def send_reset_password_email(self, request, user):
+
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+
+        reset_password_path = f"http://127.0.0.1:5500/pages/auth/forgot_password.html?uid={uidb64}&token={token}"
+        reset_password_url = request.build_absolute_uri(reset_password_path)
+
+        subject = "Reset your password"
+
+        message = f"Here can you reset your password -> {reset_password_url}"
+
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL
+            [user.email]
+        )
+
+class ConfirmNewPassword(APIView):
+
+
+    def post(self, request):
+        pass
