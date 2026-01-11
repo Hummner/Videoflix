@@ -50,16 +50,19 @@ class RegisterView(APIView):
 
         activation_url = request.build_absolute_uri(activation_path)
 
-        subject = "Token Email"
-
-        message= f"Hallo hier ist you token -> {activation_url}"
-
-        send_mail(
-            subject=subject,
-            message=message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[user.email]
+        subject = "Confirm your email"
+        
+        html_content = render_to_string(
+            "activate_profile.html",
+            {
+                "username": user.username,
+                "activation_link": activation_url
+            }
         )
+
+        msg = EmailMessage(subject, html_content, settings.DEFAULT_FROM_EMAIL, [user.email])
+        msg.content_subtype = "html"  # Main content is now text/html
+        msg.send()
 
 
         return token
@@ -196,9 +199,8 @@ class ResetPassword(APIView):
         message = f"Here can you reset your password -> {reset_password_url}"
         
         html_content = render_to_string(
-            "reset_password/reset_password.html",
+            "reset_password.html",
             {
-                "user": user,
                 "reset_link": reset_password_url
             }
         )
