@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_rq',
     'auth_app',
-    'video_app'
+    'video_app.apps.ContentConfig'
 ]
 
 MIDDLEWARE = [
