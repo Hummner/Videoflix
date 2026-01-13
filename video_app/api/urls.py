@@ -1,8 +1,8 @@
 
 from django.urls import path, include
-from .views import VideoUploadView
+from .views import VideoViewer
 
 
 urlpatterns = [
-    path('api/', VideoUploadView.as_view(), name="video-upload"),
+    path('api/video', VideoViewer.as_view(), name="video-viewer"),
 ]

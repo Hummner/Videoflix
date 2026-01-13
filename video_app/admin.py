@@ -4,4 +4,6 @@ from .models import Video
 # Register your models here.
 
 
-admin.site.register(Video)
+@admin.register(Video)
+class VideoAdmin(admin.ModelAdmin):
+    exclude = ("thumbnail_url",)

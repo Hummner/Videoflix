@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('thumbnail_url', models.CharField(blank=True)),
                 ('thumbnail_file', models.FileField(upload_to=video_app.models.video_thumbnail_root)),
                 ('category', models.CharField(choices=[('drama', 'Drama'), ('crime', 'Crime'), ('thriller', 'Thriller'), ('action', 'Action'), ('comedy', 'Comedy'), ('romance', 'Romance'), ('horror', 'Horror'), ('sci_fi', 'Science Fiction (Sci-Fi)'), ('fantasy', 'Fantasy'), ('mystery', 'Mystery'), ('adventure', 'Adventure'), ('animation', 'Animation'), ('documentary', 'Documentary'), ('family', 'Family'), ('war', 'War'), ('western', 'Western'), ('musical', 'Musical')])),
-                ('video_file', models.FileField(upload_to=video_app.models.video_uplaod_root)),
+                ('video_file', models.FileField(upload_to=video_app.models.video_upload_root)),
             ],
         ),
     ]

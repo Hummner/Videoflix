@@ -1,14 +1,9 @@
 from rest_framework.views import APIView
-from .serializers import VideoUplaodSerializer
+from .serializers import VideoSerializer
 from rest_framework.response import Response
 
 
-class VideoUploadView(APIView):
+class VideoViewer(APIView):
 
-
-    def post(self, request):
-        serializer = VideoUplaodSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response({"detail":"Upload started"})
+    def get(self, request):
+        pass
