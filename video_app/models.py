@@ -37,6 +37,14 @@ CATEGORY_CHOICES = [
 ]
 
 
+STATUS = (
+        ("pending", "Pending"),
+        ("processing", "Processing"),
+        ("ready", "Ready")
+    )
+
+
+
 class Video(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     title=models.CharField(max_length=255)
@@ -45,3 +53,4 @@ class Video(models.Model):
     thumbnail_file=models.FileField(upload_to=video_thumbnail_root)
     category=models.CharField(choices=CATEGORY_CHOICES)
     video_file = models.FileField(upload_to=video_upload_root)
+    status = models.CharField(choices=STATUS, default="pending")

@@ -6,4 +6,4 @@ from .models import Video
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
-    exclude = ("thumbnail_url",)
+    exclude = ("thumbnail_url", "status")
