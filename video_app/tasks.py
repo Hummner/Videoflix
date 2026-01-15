@@ -2,8 +2,8 @@ import django_rq
 from .converter.hls_converter import ConvertVideoToHls
 from pathlib import Path
 from django.conf import settings
-import os
 import shutil
+from django.utils.text import slugify
 
 
 
@@ -27,3 +27,6 @@ def delete_raw_video(instance):
 def delete_video_dir(instance):
         path = Path(settings.MEDIA_ROOT) / "videos" / f"{instance.pk}"
         shutil.rmtree(path)
+
+        temp_path = Path(settings.MEDIA_ROOT) / "raw" / f"{slugify(instance.title)}"
+        shutil.rmtree(temp_path)
