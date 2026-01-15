@@ -1,5 +1,9 @@
 import django_rq
 from .converter.hls_converter import ConvertVideoToHls
+from pathlib import Path
+from django.conf import settings
+import os
+import shutil
 
 
 
@@ -15,5 +19,11 @@ def convert_video_all(instance):
 
         queue.enqueue(video.get_status, depends_on=[job480, job720, job1080, job_thumbnail])
 
+
 def delete_raw_video(instance):
         pass
+
+
+def delete_video_dir(instance):
+        path = Path(settings.MEDIA_ROOT) / "videos" / f"{instance.pk}"
+        shutil.rmtree(path)
