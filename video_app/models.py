@@ -9,12 +9,12 @@ from django.utils.text import slugify
 def video_upload_root(instance, filename):
     ext = os.path.splitext(filename)[1]
     title = slugify(instance.title)
-    return f"videos/{title}/{title}_raw_video{ext}"
+    return f"temp/{title}/{title}_raw_video{ext}"
 
 def video_thumbnail_root(instance, filename):
-    ext = os.path.splitext(filename)[1]  # z. B. .mp4
+    ext = os.path.splitext(filename)[1]
     title = slugify(instance.title)
-    return f"videos/{title}/{title}_thumbnail{ext}"
+    return f"temp/{title}/{title}_thumbnail{ext}"
 
 CATEGORY_CHOICES = [
     ("drama", "Drama"),
@@ -50,7 +50,7 @@ class Video(models.Model):
     title=models.CharField(max_length=255)
     description=models.CharField(max_length=500)
     thumbnail_url=models.CharField(blank=True)
-    thumbnail_file=models.FileField(upload_to=video_thumbnail_root)
+    thumbnail_file=models.ImageField(upload_to=video_thumbnail_root, blank=True)
     category=models.CharField(choices=CATEGORY_CHOICES)
     video_file = models.FileField(upload_to=video_upload_root)
     status = models.CharField(choices=STATUS, default="pending")

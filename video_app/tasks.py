@@ -11,8 +11,9 @@ def convert_video_all(instance):
         job1080 = queue.enqueue(video.convert_video_1080p)
         job720 = queue.enqueue(video.convert_video_720p)
         job480 = queue.enqueue(video.convert_video_480p)
+        job_thumbnail = queue.enqueue(video.create_thumbnail_url_path, instance)
 
-        queue.enqueue(video.get_status, depends_on=[job480, job720, job1080])
+        queue.enqueue(video.get_status, depends_on=[job480, job720, job1080, job_thumbnail])
 
 def delete_raw_video(instance):
         pass
