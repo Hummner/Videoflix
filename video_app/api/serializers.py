@@ -19,3 +19,23 @@ class VideoListSerializer(serializers.ModelSerializer):
         fields = ['id', 'created_at', 'category', 'title', 'description', 'thumbnail_url']
         read_only_fields = ['id', 'created_at', 'category', 'title', 'description', 'thumbnail_url']
 
+
+class VideoViewerSerializer(serializers.Serializer):
+    id = serializers.PrimaryKeyRelatedField(
+        queryset = Video.objects.all(),
+        error_messages={
+            "does_not_exist": "Video not found.",
+            "incorrect_type": "Invalid video identifier."}
+    )
+
+
+    resolution = serializers.CharField()
+
+    def validate_resolution(self, value):
+        allow_value = ["480p", "720p", "1080p"]
+        if value not in allow_value:
+            raise serializers.ValidationError({"error": "Invalid resolution"})
+        
+        return value
+
+
