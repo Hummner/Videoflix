@@ -1,27 +1,4 @@
 services:
-  backend:
-    env_file: .env
-    environment:
-      - PYTHONUNBUFFERED=1
-    build:
-      context: .
-      dockerfile: backend.Dockerfile
-    command: >
-      python -m debugpy
-      --listen 0.0.0.0:5678
-      --wait-for-client
-      manage.py runserver 0.0.0.0:8000
-    ports:
-      - "8001:8000"
-      - "5678:5678"
-    volumes:
-      - .:/app
-      - videoflix_media:/app/media
-      - videoflix_static:/app/static
-    depends_on:
-      - db
-      - redis
-
   db:
     image: postgres:latest
     container_name: videoflix_database
@@ -58,11 +35,6 @@ services:
     depends_on:
       - db
       - redis
-    command: gunicorn core.wsgi:application --bind 0.0.0.0:8000 --reload
-    ## command später löschen
-
-
-
 
 volumes:
   postgres_data:
