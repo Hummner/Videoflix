@@ -30,3 +30,21 @@ def delete_video_dir(instance):
 
         temp_path = Path(settings.MEDIA_ROOT) / "raw" / f"{slugify(instance.title)}"
         shutil.rmtree(temp_path)
+
+def create_thumbnail_url_after_save(instance):
+        video = ConvertVideoToHls(instance)
+        queue = django_rq.get_queue("default", autocommit=True)
+        queue.enqueue(video.create_thumbnail_url_path, instance)
+
+
+
+def create_new_thumbnail_video(instance):
+        """
+        Generate a thumbnail photo, after remove the seleceted.
+        """
+        video = ConvertVideoToHls(instance)
+        print(video)
+        queue = django_rq.get_queue("default", autocommit=True)
+        queue.enqueue(video.create_thumbnail, instance)
+
+        

@@ -39,23 +39,21 @@ class ConvertVideoToHls():
         dest_dir = Path(settings.MEDIA_ROOT) / "videos" / f"{self.id}"
         dest_dir.mkdir(parents=True, exist_ok=True)
         new_path = Path(dest_dir) / f"{self.id}_thumbnail.jpg"
-        shutil.copy(
-            instance.thumbnail_file.path,
-            new_path
-        )
 
-        rel_path = new_path.relative_to(Path(settings.MEDIA_ROOT))
-        self.create_thumbnail_url(instance, rel_path)
-        
-        instance.thumbnail_file.name = str(rel_path)
-        instance.save(update_fields=["thumbnail_file"])
+        if Path(instance.thumbnail_file.path).exists():
 
-    def create_thumbnail_url(self, instance, rel_path):
-        url = Path("/media") / rel_path
-        instance.thumbnail_url = url
-        instance.save(update_fields=["thumbnail_url"])
+            shutil.move(
+                instance.thumbnail_file.path,
+                new_path
+            )
 
+        return self.create_thumbnail_url(new_path)
 
+    def create_thumbnail_url(self, path):
+        rel_path = path.relative_to(Path(settings.MEDIA_ROOT))
+        new_url = Path("/media") / rel_path
+        return Video.objects.filter(pk=self.id).update(thumbnail_file=rel_path, thumbnail_url=str(new_url))
+    
 
     def create_thumbnail(self, instance):
         dest_dir = Path(settings.MEDIA_ROOT) / "videos" / f"{self.id}"
@@ -75,11 +73,10 @@ class ConvertVideoToHls():
             str(output_path),
             ]
         )
+        print(output_path)
 
-        rel_path = output_path.relative_to(Path(settings.MEDIA_ROOT))
-        instance.thumbnail_file.name = str(rel_path)
-        instance.save(update_fields=["thumbnail_file"])
-        return self.create_thumbnail_url(instance, rel_path)
+        return self.create_thumbnail_url(output_path)
+        
         
 
     def convert_video_480p(self):
@@ -88,9 +85,6 @@ class ConvertVideoToHls():
 
         output_m3u8 = hls_dir / "index.m3u8"
         segment_pattern = hls_dir / f"{self.id}_segment_%d.ts"
-
-
-
 
         subprocess.run(
                     [
