@@ -4,6 +4,14 @@ Videoflix is a video streaming application consisting of a backend powered by Do
 
 ---
 
+- [Prerequisites](#prerequisites)
+- [Backend Setup](#backend-setup)
+- [Frontend Setup](#frontend-setup)
+- [Environment Variables](#environment-variables-env)
+- [How to Use](#how-to-use)
+
+---
+
 ## Prerequisites
 
 Before starting the project, make sure the following tools are installed and properly configured on your system:
