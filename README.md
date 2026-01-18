@@ -43,6 +43,8 @@ Before starting the project, make sure the following tools are installed and pro
 
 ---
 
+## Backend Setup
+
 1. Clone the backend repository:
 ```bash
 git clone https://github.com/Hummner/Videoflix.git .
