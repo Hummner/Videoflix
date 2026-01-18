@@ -117,6 +117,14 @@ git clone https://github.com/Developer-Akademie-Backendkurs/project.Videoflix
 - FFmpeg is required for video processing and must be accessible globally.
 - Backend and frontend are handled in separate repositories.
 
+### Line Endings (Windows)
+
+If you encounter issues running shell scripts inside Docker, make sure the file uses **LF** line endings.
+
+- Open the `.sh` file in **VS Code**
+- Change `CRLF` to `LF` (bottom-right corner)
+- Save the file and rebuild the containers
+
 ---
 
 
@@ -216,7 +224,6 @@ Activate your account (via activation email)
 Reset your password
 
 Watch videos in multiple quality levels (depending on what is available)
-
 
 ## Project Name
 
