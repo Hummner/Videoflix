@@ -40,7 +40,7 @@ Before starting the project, make sure the following tools are installed and pro
 
 1. Clone the backend repository:
 ```bash
-git clone https://github.com/your-username/videoflix-backend.git
+git clone https://github.com/Hummner/Videoflix.git
 cd videoflix-backend
 ```
 
@@ -66,7 +66,7 @@ docker-compose up --build
 
 1. Clone the frontend repository:
 ```bash
-git clone https://github.com/your-username/videoflix-frontend.git
+git clone https://github.com/Developer-Akademie-Backendkurs/project.Videoflix
 ```
 
 2. Open the frontend project in your code editor (for example VS Code).
