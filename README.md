@@ -78,11 +78,6 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-(Optional) Freeze installed dependencies:
-```bash
-pip freeze > requirements.txt
-```
-
 4. Create the environment file:
 ```bash
 cp .env.template .env
