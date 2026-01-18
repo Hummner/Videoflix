@@ -8,6 +8,13 @@ Videoflix is a video streaming application consisting of a backend powered by Do
 
 Before starting the project, make sure the following tools are installed and properly configured on your system:
 
+- **Python (>= 3.10)**
+  - Required for local development and dependency management
+  - Verify installation:
+    ```bash
+    python --version
+    ```
+
 - **FFmpeg**  
   - Must be installed and available in your system `PATH`
   - **Add FFmpeg to PATH (Windows):**
@@ -36,22 +43,44 @@ Before starting the project, make sure the following tools are installed and pro
 
 ---
 
-## Backend Setup
-
 1. Clone the backend repository:
 ```bash
-git clone https://github.com/Hummner/Videoflix.git
-cd videoflix-backend
+git clone https://github.com/Hummner/Videoflix.git .
 ```
 
-2. Create the environment file:
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+```
+
+- **Windows**
+```bash
+venv\Scripts\activate
+```
+
+- **macOS / Linux**
+```bash
+source venv/bin/activate
+```
+
+3. Install Python dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+(Optional) Freeze installed dependencies:
+```bash
+pip freeze > requirements.txt
+```
+
+4. Create the environment file:
 ```bash
 cp .env.template .env
 ```
 
-3. Open the `.env` file and fill in all required environment variables.
+5. Open the `.env` file and fill in all required environment variables.
 
-4. Start the backend using Docker:
+6. Start the backend using Docker:
 ```bash
 docker compose up --build
 ```
