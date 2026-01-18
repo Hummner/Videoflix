@@ -7,11 +7,13 @@ from django.utils.text import slugify
 
 
 def video_upload_root(instance, filename):
+    """Return the upload path for the raw video file."""
     ext = os.path.splitext(filename)[1]
     title = slugify(instance.title)
     return f"raw/{title}/{title}_raw_video{ext}"
 
 def video_thumbnail_root(instance, filename):
+    """Return the upload path for the raw thumbnail file."""
     ext = os.path.splitext(filename)[1]
     title = slugify(instance.title)
     return f"raw/{title}/{title}_thumbnail{ext}"

@@ -3,7 +3,6 @@ from .models import Video
 from django.dispatch import receiver
 from .tasks import convert_video_all, delete_video_dir, create_thumbnail_url_after_save, create_new_thumbnail_video
 from django.utils.text import slugify
-from django.forms.models import model_to_dict
 
 @receiver(post_save, sender=Video)
 def video_post_save(sender, instance, created, **kwargs):

@@ -6,11 +6,18 @@ from .models import Video
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
+    """
+    Admin configuration for the Video model.
 
-    def get_readonly_fields(self, request, obj = ...):
+    - Makes `video_file` read-only after the object is created.
+    - Hides internal fields from the admin form.
+    """
 
+    def get_readonly_fields(self, request, obj=None):
+        """Allow editing `video_file` only on creation, not on update."""
         if obj:
             return ("video_file",)
-
         return super().get_readonly_fields(request, obj)
+
+    # Fields not shown in the admin form
     exclude = ("thumbnail_url", "status")
