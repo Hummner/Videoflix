@@ -181,7 +181,7 @@ Videos can only be added via the Django Admin panel. Adding videos via the REST 
 
 1. Open the Django Admin panel in your browser:
 
-http://localhost:8000/admin
+   http://localhost:8000/admin
 
 
 2. Log in with the superuser credentials from your .env:
@@ -193,8 +193,10 @@ http://localhost:8000/admin
 3. In the admin dashboard, navigate to the video section (Videos).
 
 4. Click **Add** and upload the video (and fill in any additional required fields).
-   - The **thumbnail is optional**.
-   - If no thumbnail is provided, the application will automatically generate one from the **first frame** of the video.
+  - The **thumbnail is optional**.
+  - If no thumbnail is provided, the application will automatically generate one from the **first frame** of the video.
+  - A **custom thumbnail can be added later**.
+  - The **video file itself cannot be modified** after it has been uploaded.
 
 5. Save the entry.
 
