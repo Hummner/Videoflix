@@ -223,7 +223,7 @@ class ResetPassword(APIView):
         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
         token = default_token_generator.make_token(user)
 
-        reset_password_path = f"http://127.0.0.1:5500/pages/auth/forgot_password.html?uid={uidb64}&token={token}"
+        reset_password_path = f"http://127.0.0.1:5500/pages/auth/confirm_password.html?uid={uidb64}&token={token}"
         reset_password_url = request.build_absolute_uri(reset_password_path)
 
         subject = "Reset your password"

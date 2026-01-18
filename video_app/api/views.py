@@ -5,7 +5,7 @@ from ..models import Video
 from pathlib import Path
 from django.conf import settings
 from django.http import HttpResponse, FileResponse
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from auth_app.api.authentication import CookieJWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -14,9 +14,14 @@ class VideoListViewer(APIView):
     List endpoint for all videos that are ready to be viewed.
 
     Authentication:
-    - Uses JWTAuthentication (SimpleJWT).
+    - Uses JWTAuthentication (CookieJWTAuthentication).
+    
+    Permissions:
+    - User must be authenticated
+    - Only active users are allowed to access this endpoint
     """
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [CookieJWTAuthentication]
+    permission_classes = [IsAuthenticated]
     
 
     def get(self, request):
@@ -37,10 +42,15 @@ class VideoViewer(APIView):
     Authentication:
     - Uses JWTAuthentication (SimpleJWT).
 
+    Permissions:
+    - User must be authenticated
+    - Only active users are allowed to access this endpoint
+
     Validation:
     - Uses VideoViewerSerializer to validate the video id and allowed resolutions.
     """
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [CookieJWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, movie_id, resolution):
         """
@@ -67,8 +77,13 @@ class VideoSegmentViewer(APIView):
 
     Authentication:
     - Uses JWTAuthentication (SimpleJWT).
+
+    Permissions:
+    - User must be authenticated
+    - Only active users are allowed to access this endpoint
     """
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [CookieJWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
     def get(self, request, movie_id, resolution, segment):
