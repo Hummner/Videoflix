@@ -32,15 +32,12 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         - Removes confirmed_password from validated_data.
         - Generates a unique username.
-        - Sets the password using `set_password` (hashing).
         """
-        confirmed_password = validated_data.pop('confirmed_password')
-        password = validated_data['password']
+        validated_data.pop('confirmed_password')
         email = validated_data['email']
         username = self.generate_unique_username(email)
 
-        user = User.objects.create(username=username, email=email)
-        user.set_password(password)
+        user = User.objects.create(username=username, **validated_data)
         user.is_active=False
         user.save()
         return user

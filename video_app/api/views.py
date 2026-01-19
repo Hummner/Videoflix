@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from ..models import Video
 from pathlib import Path
 from django.conf import settings
-from django.http import HttpResponse, FileResponse
+from django.http import FileResponse
 from auth_app.api.authentication import CookieJWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 

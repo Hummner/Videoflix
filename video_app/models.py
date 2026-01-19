@@ -52,7 +52,8 @@ class Video(models.Model):
     title=models.CharField(max_length=255)
     description=models.CharField(max_length=500)
     thumbnail_url=models.CharField(blank=True)
-    thumbnail_file=models.ImageField(upload_to=video_thumbnail_root, blank=True)
+    thumbnail_file=models.ImageField(upload_to=video_thumbnail_root, blank=True, help_text="" \
+    "If no thumbnail is provided, one will be generated automatically. You can add a custom one later.")
     category=models.CharField(choices=CATEGORY_CHOICES)
-    video_file = models.FileField(upload_to=video_upload_root)
+    video_file = models.FileField(upload_to=video_upload_root, help_text="The video file itself cannot be modified after it has been uploaded.")
     status = models.CharField(choices=STATUS, default="pending")

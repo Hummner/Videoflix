@@ -10,8 +10,6 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
-from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from django.template.loader import render_to_string
 
@@ -227,8 +225,6 @@ class ResetPassword(APIView):
         reset_password_url = request.build_absolute_uri(reset_password_path)
 
         subject = "Reset your password"
-
-        message = f"Here can you reset your password -> {reset_password_url}"
         
         html_content = render_to_string(
             "reset_password.html",

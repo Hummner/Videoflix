@@ -58,34 +58,14 @@ Before starting the project, make sure the following tools are installed and pro
 git clone https://github.com/Hummner/Videoflix.git .
 ```
 
-2. Create and activate a virtual environment:
-```bash
-python -m venv venv
-```
-
-- **Windows**
-```bash
-venv\Scripts\activate
-```
-
-- **macOS / Linux**
-```bash
-source venv/bin/activate
-```
-
-3. Install Python dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Create the environment file:
+2. Create the environment file:
 ```bash
 cp .env.template .env
 ```
 
-5. Open the `.env` file and fill in all required environment variables.
+3. Open the `.env` file and fill in all required environment variables.
 
-6. Start the backend using Docker:
+4. Start the backend using Docker:
 ```bash
 docker compose up --build
 ```
