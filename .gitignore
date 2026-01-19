@@ -1,9 +1,83 @@
-venv
-db
-.env
-.vscode
-
-# Python bytecode
+# --- Python ---
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
 *.pyo
+*.pyd
+
+# --- Django ---
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+*.pot
+
+# Media & static (ha nem akarod verziózni)
+media/
+staticfiles/
+
+# Collected static (Django collectstatic)
+static/
+
+# --- Environment variables ---
+.env
+.env.*
+*.env
+
+# --- Virtual environments ---
+venv/
+.venv/
+env/
+ENV/
+pip-wheel-metadata/
+
+# --- Packaging / build ---
+build/
+dist/
+*.egg-info/
+.eggs/
+wheelhouse/
+
+# --- Testing / coverage ---
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+coverage.xml
+pytestdebug.log
+
+# --- Type checking / lint ---
+.mypy_cache/
+.pyright/
+.ruff_cache/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Cache ---
+*.cache
+.cache/
+
+# --- IDEs ---
+.vscode/
+.idea/
+*.iml
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Celery / Redis ---
+celerybeat-schedule
+celerybeat.pid
+
+# --- Secrets / Keys ---
+*.pem
+*.key
+*.crt
+
+# --- Docker ---
+# *.env is already ignored
+docker-data/

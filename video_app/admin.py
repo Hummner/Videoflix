@@ -3,6 +3,9 @@ from .models import Video
 
 # Register your models here.
 
+admin.site.site_header = 'Videoflix Admin Panel'
+admin.site.site_title = 'Admin | Videoflix'
+
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
@@ -21,3 +24,7 @@ class VideoAdmin(admin.ModelAdmin):
 
     # Fields not shown in the admin form
     exclude = ("thumbnail_url", "status")
+    
+
+
+
