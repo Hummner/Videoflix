@@ -20,9 +20,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         """Ensure password and confirmed_password match."""
         password = attrs.get('password')
         confirmed_password = attrs.get('confirmed_password')
+        email = attrs.get('email')
 
         if password != confirmed_password:
             raise serializers.ValidationError('Password and confirmation do not match.')
+        
+        if User.objects.filter(email=email).exists():
+                raise serializers.ValidationError({"email": "This email address is already in use."})
 
         return attrs
     
